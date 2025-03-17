@@ -25,3 +25,5 @@ MYSQL_HOST=localhost
 //62.20.62.211 (kanske)
 MYSQL_PORT=3306
 ```
+
+Run the SQL Files in numerical order, the `database.sql` is only there in case you wanna create all the tables but not do anything with it, you can ignore it.
