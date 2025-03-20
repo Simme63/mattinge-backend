@@ -10,6 +10,7 @@ export const BookingRoutes = new Hono();
 
 const bookingsSchema = z.object({
   id: z.coerce.number({ message: "Invalid booksid format!" }),
+  userId: z.coerce.number({ message: "Invalid booksid format!" }),
   bookingDate: z.coerce.date({ message: "Book name is required!" }),
   checkInDate: z.coerce.date({ message: "Author name is required!" }),
   checkOutDate: z.coerce.date({ message: "Category is required!" }),
@@ -66,6 +67,7 @@ BookingRoutes.get("/date/:date", async (context) => {
 BookingRoutes.post(
   "/bookingpost",
   validator("json", validatorFn(bookingsSchema)),
+
   async (context) => {
     const booking = context.req.valid("json");
 
@@ -80,6 +82,32 @@ BookingRoutes.post(
         { message: "Booking created successfully", booking: "booking!" },
         201
       );
+    } catch (error: unknown) {
+      return context.json({ message: String(error) }, 500);
+    }
+  }
+);
+
+BookingRoutes.delete(
+  "/:userId",
+  validator("json", validatorFn(bookingsSchema)),
+  async (context) => {
+    const userId = Number(context.req.param("userId"));
+
+    try {
+      // Check if booking exists
+      const [booking] = await db.execute<IBooking[]>(
+        sql`SELECT * FROM bookings WHERE userId = ${userId} LIMIT 1;`
+      );
+
+      if (!booking) {
+        return context.json({ message: "Booking not found" }, 404);
+      }
+
+      // Delete the booking
+      await db.execute(sql`DELETE FROM bookings WHERE userId = ${userId};`);
+
+      return context.json({ message: "Booking deleted successfully" }, 200);
     } catch (error: unknown) {
       return context.json({ message: String(error) }, 500);
     }
