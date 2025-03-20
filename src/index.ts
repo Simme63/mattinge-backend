@@ -8,7 +8,7 @@ const port = 3000;
 const app = new Hono({ strict: false }).basePath("/api");
 
 app.get("/", (c) => {
-  return c.text("Hello Melker!");
+  return c.text("Hello! You shouldn't be here!");
 });
 
 if (!process.env.TEST) {
