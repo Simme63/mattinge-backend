@@ -14,3 +14,4 @@ UserRoutes.get("/", async (context) => {
 		return context.json({ message: String(error) }, 500);
 	}
 });
+
