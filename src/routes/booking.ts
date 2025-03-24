@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { sql } from "../database.js";
-import type { IBooking } from "../types.js";
+import type { IBookings } from "../types.js";
 
 export const BookingRoutes = new Hono();
 
 // * GET -> /booking
 BookingRoutes.get("/", async (context) => {
   try {
-    const booking = await sql<IBooking[]>`
+    const booking = await sql<IBookings[]>`
       SELECT * FROM booking;
       `
 

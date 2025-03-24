@@ -1,13 +1,9 @@
-export interface IUser {
+export interface IBooker {
 	id: number;
 	firstName: string;
 	lastName: string;
 	email: string;
 	phone: string;
-	streetAddress: string;
-	postAddress: string;
-	organization?: string;
-	cardnummer: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -27,47 +23,29 @@ export interface ICustomer {
 	updated_at: Date;
 }
 
-export interface IBooking {
+export interface IBookings {
 	id: number;
-	userId: number;
-	bookingDate: Date;
-	checkInDate: Date;
-	checkOutDate: Date;
-	bookingType: "regular" | "wedding";
-	bookingName?: string;
+	booker_id: number;
+	booking_date: Date;
+	check_in_date: Date;
+	check_out_date: Date;
+	booking_type: "regular" | "wedding";
 	status: "pending" | "reserved" | "booked";
-	amountOfGuests?: number;
 	totalPrice?: number;
-	createdAt: Date;
-	updatedAt: Date;
-}
-
-export interface IRoomBooking {
-	id: number;
-	bookingId: number;
-	name: string;
-	personName: string;
-	type: string;
-	bedConfiguration?: string;
-	description?: string;
-	aid?: string;
-	checkInDate: Date;
-	checkOutDate: Date;
-	capacity?: number;
-	price?: number;
+	paymentmethod: "fakutra" | "swish" | "förskott" | "kreditkort" | "betalkort" | "klarna" | "stripe"
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export interface IBookingAddon {
 	id: number;
-	bookingId: number;
-	roomId?: number;
-	addonType: string;
+	booking_id: number;
+	house_id?: number;
+	addon_type: string;
 	quantity: number;
 	price: number;
-	startTime?: Date;
-	endTime?: Date;
+	start_time?: Date;
+	end_time?: Date;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -105,4 +83,43 @@ export interface IHouse {
 	price: number;
 	created_at: Date;
 	updated_at: Date;
+}
+
+export interface IStaff {
+	id: number;
+	personnumber: number;
+	first_name: string;
+	last_name: string;
+	email: string;
+	phone: string;
+	created_at: Date;
+	updated_at: Date;
+}
+
+export interface IRoom {
+	id: number;
+	name: string;
+	description: string;
+	size: number;
+	aid: string;
+}
+
+export interface IHouse_Rooms {
+	id: number;
+	house_id: number;
+	room_id: number;
+}
+
+export interface IBeds {
+	id: number;
+	bed_type: "queen" | "single" | "bunk" | "adjustable"
+	aid: string;
+	capacity: string
+}
+
+export interface IRoom_Beds {
+	id: number;
+	room_id: number;
+	bed_id: number;
+	quantity: number;
 }
