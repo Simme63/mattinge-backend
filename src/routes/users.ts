@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { db } from "../database.js";
+import { sql } from "../database.js";
 import type { IUser } from "../types.js";
 
 export const UserRoutes = new Hono();
@@ -8,12 +8,16 @@ export const UserRoutes = new Hono();
 UserRoutes.get("/:id", async (context) => {
 	try {
 		const id = context.req.param("id");
+		const user = await sql<IUser[]>`
+	SELECT * FROM users WHERE id = ${id};
+`;
 
-		const [rows] = await db.execute<IUser[]>(
-			`SELECT * FROM users WHERE id = ${id};`
-		);
+		if (user.length === 0) {
+			return context.json({ message: "User not found" }, 404);
+		}
+
 		return context.json(
-			{ message: "User Found Successfully", user: rows },
+			{ message: "User Found Successfully", user: user[0] },
 			200
 		);
 	} catch (error: unknown) {
@@ -26,11 +30,11 @@ UserRoutes.get("/:organization", async (context) => {
 	try {
 		const organization = context.req.param("organization");
 
-		const [rows] = await db.execute<IUser[]>(
-			`SELECT * FROM users WHERE  = ${organization};`
-		);
+		const user = await sql<IUser[]>`
+	SELECT * FROM users WHERE  = ${organization};
+`;
 		return context.json(
-			{ message: "User Found Successfully", user: rows },
+			{ message: "User Found Successfully", user: user },
 			200
 		);
 	} catch (error: unknown) {
@@ -38,16 +42,18 @@ UserRoutes.get("/:organization", async (context) => {
 	}
 });
 
+// > PATCH -> /users/:id
 UserRoutes.patch("/:id", async (context) => {
 	try {
 		const id = context.req.param("id");
-		const [rows] = await db.execute<IUser[]>(
-			`UPDATE users SET active = FALSE WHERE id = ${id}`
-		);
+		const user = await sql<IUser[]>`
+		UPDATE users SET active = FALSE WHERE id = ${id}
+			`
+		;
 		return context.json(
 			{
 				message: "User set to Inactive (deleted) Successfully",
-				user: rows,
+				user: user,
 			},
 			200
 		);
@@ -59,7 +65,9 @@ UserRoutes.patch("/:id", async (context) => {
 // * GET -> /users
 UserRoutes.get("/", async (context) => {
 	try {
-		const [users] = await db.execute<IUser[]>("SELECT * FROM users;");
+		const users = await sql<IUser[]>`
+		SELECT * FROM users;
+  	`;
 
 		return context.json({ users }, 200);
 	} catch (error: unknown) {
