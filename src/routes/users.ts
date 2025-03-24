@@ -38,6 +38,24 @@ UserRoutes.get("/:organization", async (context) => {
 	}
 });
 
+UserRoutes.patch("/:id", async (context) => {
+	try {
+		const id = context.req.param("id");
+		const [rows] = await db.execute<IUser[]>(
+			`UPDATE users SET active = FALSE WHERE id = ${id}`
+		);
+		return context.json(
+			{
+				message: "User set to Inactive (deleted) Successfully",
+				user: rows,
+			},
+			200
+		);
+	} catch (error: unknown) {
+		return context.json({ message: String(error) }, 500);
+	}
+});
+
 // * GET -> /users
 UserRoutes.get("/", async (context) => {
 	try {
