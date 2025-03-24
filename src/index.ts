@@ -1,8 +1,17 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { UserRoutes } from "./routes/booker.js";
-import { BookingRoutes } from "./routes/booking.js";
+import { BookerRoutes } from "./routes/booker.js";
+import { BookingRoutes } from "./routes/bookings.js";
+import { RoomBedsRoutes } from "./routes/room_beds.js";
+import { BedsRoutes } from "./routes/beds.js";
+import { RoomRoutes } from "./routes/room.js";
+import { HouseRoomsRoutes } from "./routes/house_rooms.js";
+import { StaffRoutes } from "./routes/staff.js";
+import { BookingAddonRoutes } from "./routes/booking_addons.js";
+import { HouseRoutes } from "./routes/house.js";
+import { CustomerRoutes } from "./routes/customer.js";
+import { GuestRoutes } from "./routes/guests.js";
 
 const port = 3000;
 const app = new Hono({ strict: false }).basePath("/api");
@@ -16,8 +25,18 @@ if (!process.env.TEST) {
 }
 
 // * Routes
-app.route("/users", UserRoutes);
+app.route("/booker", BookerRoutes);
 app.route("/booking", BookingRoutes);
+app.route("/room_beds", RoomBedsRoutes);
+app.route("/beds", BedsRoutes);
+app.route("/room", RoomRoutes);
+app.route("/house_rooms", HouseRoomsRoutes);
+app.route("/staff", StaffRoutes);
+app.route("/booking_addons", BookingAddonRoutes);
+app.route("/house", HouseRoutes);
+app.route("/customers", CustomerRoutes);
+app.route("/guests", GuestRoutes);
+
 
 // * 404 Route
 app.use(async (context) => {

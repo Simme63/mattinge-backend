@@ -12,7 +12,7 @@ export interface ICustomer {
 	id: number;
 	booker_id: number;
 	active: boolean;
-	personnumer: string;
+	personnummer: string;
 	companyname: string;
 	customertype: string;
 	orgnumber: string;
@@ -36,19 +36,22 @@ export interface IBookings {
 	createdAt: Date;
 	updatedAt: Date;
 }
-
-export interface IBookingAddon {
+export interface IHouse {
 	id: number;
 	booking_id: number;
-	house_id?: number;
-	addon_type: string;
-	quantity: number;
+	name: string;
+	type: string;
+	bed_configuration?: string;
+	description?: string;
+	aid?: string;
+	check_in_date: Date;
+	check_out_date: Date;
+	capacity: number;
 	price: number;
-	start_time?: Date;
-	end_time?: Date;
-	createdAt: Date;
-	updatedAt: Date;
+	created_at: Date;
+	updated_at: Date;
 }
+
 
 export interface IGuest {
 	id: number;
@@ -69,25 +72,22 @@ export interface IGuest {
 	addonId: number;
 }
 
-export interface IHouse {
+export interface IBookingAddon {
 	id: number;
 	booking_id: number;
-	name: string;
-	type: string;
-	bed_configuration?: string;
-	description?: string;
-	aid?: string;
-	check_in_date: Date;
-	check_out_date: Date;
-	capacity: number;
+	house_id?: number;
+	addon_type: string;
+	quantity: number;
 	price: number;
-	created_at: Date;
-	updated_at: Date;
+	start_time?: Date;
+	end_time?: Date;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface IStaff {
 	id: number;
-	personnumber: number;
+	personnummer: number;
 	first_name: string;
 	last_name: string;
 	email: string;
