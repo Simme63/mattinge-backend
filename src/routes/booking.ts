@@ -18,6 +18,7 @@ const bookingsSchema = z.object({
   bookingName: z.string({ message: "Invalid inventory ID format!" }),
   status: z.string({ message: "Invalid inventory ID format!" }),
   amountOfGuests: z.coerce.number({ message: "Invalid inventory ID format!" }),
+  totalPrice: z.coerce.number({ message: "Invalid inventory ID format!" }),
   createdAt: z.coerce.date({ message: "Invalid inventory ID format!" }),
   updatedAt: z.coerce.date({ message: "Invalid inventory ID format!" }),
 });
@@ -108,6 +109,54 @@ BookingRoutes.delete(
       await db.execute(sql`DELETE FROM bookings WHERE userId = ${userId};`);
 
       return context.json({ message: "Booking deleted successfully" }, 200);
+    } catch (error: unknown) {
+      return context.json({ message: String(error) }, 500);
+    }
+  }
+);
+
+BookingRoutes.put(
+  "/:id",
+  validator("param", validatorFn(bookingsSchema)),
+  validator("json", validatorFn(bookingsSchema)),
+  async (context) => {
+    const { id } = context.req.valid("param");
+    const body = context.req.valid("json");
+
+    try {
+      // Check if the booking exists
+      const [existingBooking] = await db.execute<IBooking[]>(
+        sql`SELECT * FROM bookings WHERE id = ${id} LIMIT 1;`
+      );
+
+      if (!existingBooking) {
+        return context.json({ message: "Booking not found" }, 404);
+      }
+
+      // Update the booking
+      const updatedBooking = await db.execute<IBooking[]>(
+        sql`
+          UPDATE bookings
+          SET 
+            userId = ${body.userId},
+            bookingDate = ${body.bookingDate},
+            checkInDate = ${body.checkInDate},
+            checkOutDate = ${body.checkOutDate},
+            bookingType = ${body.bookingType},
+            bookingName = ${body.bookingName},
+            status = ${body.status},
+            amountOfGuests = ${body.amountOfGuests},
+            totalPrice = ${body.totalPrice},
+            updatedAt = NOW()
+          WHERE id = ${id}
+          RETURNING *;
+        `
+      );
+
+      return context.json(
+        { message: "Booking updated successfully", updatedBooking },
+        200
+      );
     } catch (error: unknown) {
       return context.json({ message: String(error) }, 500);
     }
