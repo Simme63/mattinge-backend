@@ -12,6 +12,21 @@ export interface IUser {
 	updatedAt: Date;
 }
 
+export interface ICustomer {
+	id: number;
+	booker_id: number;
+	active: boolean;
+	personnumer: string;
+	companyname: string;
+	customertype: string;
+	orgnumber: string;
+	street_adress: string;
+	post_adress: string;
+	faktureringsinfo: string;
+	created_at: Date;
+	updated_at: Date;
+}
+
 export interface IBooking {
 	id: number;
 	userId: number;
@@ -74,4 +89,20 @@ export interface IGuest {
 	roomId: number;
 	userId: number;
 	addonId: number;
+}
+
+export interface IHouse {
+	id: number;
+	booking_id: number;
+	name: string;
+	type: string;
+	bed_configuration?: string;
+	description?: string;
+	aid?: string;
+	check_in_date: Date;
+	check_out_date: Date;
+	capacity: number;
+	price: number;
+	created_at: Date;
+	updated_at: Date;
 }
