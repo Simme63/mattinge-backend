@@ -48,8 +48,7 @@ BookerRoutes.patch("/:id", async (context) => {
 		const id = context.req.param("id");
 		const booker = await sql<IBooker[]>`
 		UPDATE bookers SET active = FALSE WHERE id = ${id}
-			`
-		;
+			`;
 		return context.json(
 			{
 				message: "Booker set to Inactive (deleted) Successfully",
@@ -62,14 +61,14 @@ BookerRoutes.patch("/:id", async (context) => {
 	}
 });
 
-// * GET -> /bookers
+// * GET -> /booker
 BookerRoutes.get("/", async (context) => {
 	try {
-		const bookers = await sql<IBooker[]>`
-		SELECT * FROM bookers;
+		const booker = await sql<IBooker[]>`
+		SELECT * FROM booker;
   	`;
 
-		return context.json({ booker: bookers[0] }, 200);
+		return context.json({ booker: booker }, 200);
 	} catch (error: unknown) {
 		return context.json({ message: String(error) }, 500);
 	}

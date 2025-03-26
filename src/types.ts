@@ -32,7 +32,14 @@ export interface IBookings {
 	booking_type: "regular" | "wedding";
 	status: "pending" | "reserved" | "booked";
 	totalPrice?: number;
-	paymentmethod: "fakutra" | "swish" | "förskott" | "kreditkort" | "betalkort" | "klarna" | "stripe"
+	paymentmethod:
+		| "fakutra"
+		| "swish"
+		| "förskott"
+		| "kreditkort"
+		| "betalkort"
+		| "klarna"
+		| "stripe";
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -52,7 +59,6 @@ export interface IHouse {
 	updated_at: Date;
 }
 
-
 export interface IGuest {
 	id: number;
 	personnummer: string;
@@ -68,7 +74,7 @@ export interface IGuest {
 	notes?: string;
 	typeOfGuest?: string;
 	roomId: number;
-	userId: number;
+	bookerId: number;
 	addonId: number;
 }
 
@@ -112,9 +118,9 @@ export interface IHouse_Rooms {
 
 export interface IBeds {
 	id: number;
-	bed_type: "queen" | "single" | "bunk" | "adjustable"
+	bed_type: "queen" | "single" | "bunk" | "adjustable";
 	aid: string;
-	capacity: string
+	capacity: string;
 }
 
 export interface IRoom_Beds {

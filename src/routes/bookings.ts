@@ -4,15 +4,15 @@ import type { IBookings } from "../types.js";
 
 export const BookingRoutes = new Hono();
 
-// * GET -> /booking
+// * GET -> /bookings
 BookingRoutes.get("/", async (context) => {
-  try {
-    const booking = await sql<IBookings[]>`
-      SELECT * FROM booking;
-      `
+	try {
+		const bookings = await sql<IBookings[]>`
+      SELECT * FROM bookings;
+      `;
 
-    return context.json({ booking }, 200);
-  } catch (error: unknown) {
-    return context.json({ message: String(error) }, 500);
-  }
+		return context.json({ bookings: bookings }, 200);
+	} catch (error: unknown) {
+		return context.json({ message: String(error) }, 500);
+	}
 });
